@@ -1,0 +1,173 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "",
+"class": "ActionResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/ActionResource.gdns"
+}, {
+"base": "KinematicBody2D",
+"class": "BasicEntity",
+"language": "GDScript",
+"path": "res://godot-src/Entities/sample_entity/sample_entity_agent.gd"
+}, {
+"base": "Resource",
+"class": "CollectibleResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/CollectibleResource.gdns"
+}, {
+"base": "",
+"class": "DamageResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/DamageResource.gdns"
+}, {
+"base": "",
+"class": "Ecs",
+"language": "NativeScript",
+"path": "res://godot-src/Native/Ecs.gdns"
+}, {
+"base": "",
+"class": "EcsFactory",
+"language": "NativeScript",
+"path": "res://godot-src/Native/EcsFactory.gdns"
+}, {
+"base": "",
+"class": "EntityResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/EntityResource.gdns"
+}, {
+"base": "",
+"class": "FindObjectSensorResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/FindObjectSensorResource.gdns"
+}, {
+"base": "Resource",
+"class": "GoalResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/GoalResource.gdns"
+}, {
+"base": "",
+"class": "GoapBlackboardNode",
+"language": "NativeScript",
+"path": "res://godot-src/Native/GoapBlackboardNode.gdns"
+}, {
+"base": "",
+"class": "HealthResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/HealthResource.gdns"
+}, {
+"base": "",
+"class": "InventoryResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/InventoryResource.gdns"
+}, {
+"base": "Node2D",
+"class": "Node2DEntity",
+"language": "GDScript",
+"path": "res://godot-src/Entities/StaticEntity/base/base_static_body_entity.gd"
+}, {
+"base": "Resource",
+"class": "RegenerationResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/RegenerationResource.gdns"
+}, {
+"base": "",
+"class": "SpeedResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/SpeedResource.gdns"
+}, {
+"base": "StaticBody2D",
+"class": "StaticEntity",
+"language": "GDScript",
+"path": "res://godot-src/Entities/StaticEntity/base/base_node2d_entity.gd"
+}, {
+"base": "StaticEntity",
+"class": "TreeEntity",
+"language": "GDScript",
+"path": "res://godot-src/Entities/StaticEntity/tree/tree.gd"
+} ]
+_global_script_class_icons={
+"ActionResource": "",
+"BasicEntity": "",
+"CollectibleResource": "",
+"DamageResource": "",
+"Ecs": "",
+"EcsFactory": "",
+"EntityResource": "",
+"FindObjectSensorResource": "",
+"GoalResource": "",
+"GoapBlackboardNode": "",
+"HealthResource": "",
+"InventoryResource": "",
+"Node2DEntity": "",
+"RegenerationResource": "",
+"SpeedResource": "",
+"StaticEntity": "",
+"TreeEntity": ""
+}
+
+[application]
+
+config/name="ecs-goap-rust-demo"
+run/main_scene="res://godot-src/main/Game.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+rust_panic_hook="*res://godot-src/singletons/RustPanicHook.gd"
+
+[display]
+
+window/size/width=480
+window/size/height=270
+window/size/test_width=1280
+window/size/test_height=720
+window/stretch/mode="2d"
+window/stretch/aspect="keep_width"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/imrp/plugin.cfg" )
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[input]
+
+move_left={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":65,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_right={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":68,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_forward={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":87,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_back={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":83,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"

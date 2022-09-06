@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://godot-src/Native/GoalResource.gdns" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+goal = 1
+priority = 4
+name = "Calm Down"
+desired_state = {
+"is_frightened": false
+}

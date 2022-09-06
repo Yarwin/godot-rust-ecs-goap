@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/sprites/forestDecoration_0.png" type="Texture" id=1]
+[ext_resource path="res://godot-src/Entities/StaticEntity/base/base_node2d_entity.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 96.6365, 115.263, 15.5338, 10.8182 )
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 5.0
+height = 0.0
+
+[node name="Node2D" type="StaticBody2D" groups=["wood"]]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )

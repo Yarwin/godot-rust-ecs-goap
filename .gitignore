@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+/.idea/
+/target/
+/Cargo.lock
+/.import/
+/rust-src/target/
+/assets/kenney_medievalrtspack/

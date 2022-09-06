@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://godot-src/Native/ActionResource.gdns" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+action = 3
+cost = 1
+name = "Collect wood"
+pre_conditions = {
+"see_wood": true
+}
+post_conditions = {
+"has_wood": true
+}

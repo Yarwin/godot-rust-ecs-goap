@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://godot-src/Native/ActionResource.gdns" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+action = 1
+cost = 1
+name = "Find Tree"
+pre_conditions = null
+post_conditions = {
+"see_tree": true
+}
