@@ -7,7 +7,7 @@ use crate::components::components_traits::GodotResourceComponent;
 #[derive(Debug)]
 pub struct GodotNode {
     // a representation of this entity in the godot game
-    pub(crate) godot_entity: Ref<Node>
+    pub(crate) godot_entity: Ref<Node2D>
 }
 
 #[derive(Debug)]

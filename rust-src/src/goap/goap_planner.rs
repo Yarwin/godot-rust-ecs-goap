@@ -14,41 +14,12 @@ use crate::goap_system::godot_blackboard::GoapBlackboardNode;
 pub type GoapPlannerWorkingFacts = HashMap<String, bool>;
 
 
-pub trait GoapAction {
-    fn is_valid(&self, current_state: &GoapPlannerWorkingFacts) -> bool;
-    fn get_cost(&self, original_cost: u32, current_state: &GoapPlannerWorkingFacts) -> u32;
-    fn perform(&mut self,
-               working_memory: &mut GoapWorkingMemoryFacts,
-               owner: Entity,
-               world: &mut World,
-               global_state: &GlobalStateResource,
-               blackboard: &mut Instance<GoapBlackboardNode>,
-               global_facts: &GoapPlannerWorkingFacts) -> bool;
-    fn clear(&self, blackboard: &mut Instance<GoapBlackboardNode>);
+pub trait Action {
+    fn get_id(&self) -> usize;
+    fn get_name(&self) -> String;
+    fn get_preconditions(&self) -> &GoapPlannerWorkingFacts;
+    fn get_post_conditions(&self) -> &GoapPlannerWorkingFacts;
 }
-
-pub trait GoapGoal {
-    fn is_valid(&self, current_memory: &GoapWorkingMemoryFacts, current_facts: &GoapPlannerWorkingFacts) -> bool;
-    fn priority(&self, original_priority: u32, current_memory: &GoapWorkingMemoryFacts) -> u32;
-}
-
-pub struct GGoal<T: GoapGoal + Sync + Send> {
-    pub id: usize,
-    pub name: String,
-    pub priority: u32,
-    pub desired_state: GoapPlannerWorkingFacts,
-    pub goal: T
-}
-
-pub struct GAction<T: GoapAction + Sync + Send> {
-    pub id: usize,
-    pub name: String,
-    pub cost: u32,
-    pub action: T,
-    pub pre_conditions: GoapPlannerWorkingFacts,
-    pub post_conditions: GoapPlannerWorkingFacts,
-}
-
 
 #[derive(PartialEq, Eq, Clone)]
 struct PlanNode {
@@ -77,24 +48,27 @@ impl PlanNode {
         }
     }
 
-    fn child<T: GoapAction + Sync + Send>(parent_state: GoapPlannerWorkingFacts, action: &GAction<T>) -> PlanNode {
+    /// Makes a plan node from a parent state and an action applied to that state.
+    fn child<T: Action>(parent_state: GoapPlannerWorkingFacts, action: &T) -> PlanNode {
         let mut child = PlanNode {
             current_state: parent_state.clone(),
-            action: Some(action.id)
+            action: Some(action.get_id())
         };
 
-        for (name, value) in &action.post_conditions {
+        // Applies the post-condition of the action applied on our parent state.
+        for (name, value) in action.get_post_conditions() {
             child.current_state.insert(name.clone(), value.clone());
         }
 
         child
     }
 
-    fn possible_next_nodes<T: GoapAction + Sync + Send>(&self, actions: &Vec<GAction<T>>, current_state: &GoapPlannerWorkingFacts) -> Vec<(PlanNode, u32)> {
+    /// Returns all possible nodes from this current state, along with the cost to get there.
+    fn possible_next_nodes<T: Action>(&self, actions: &Vec<(&T, u32)>) -> Vec<(PlanNode, u32)> {
         let mut nodes: Vec<(PlanNode, u32)> = vec![];
-        for action in actions {
-            if self.matches_target(&action.pre_conditions) {
-                nodes.push((PlanNode::child(self.current_state.clone(), action), action.action.get_cost(action.cost, current_state)));
+        for (action, cost) in actions {
+            if self.matches_target(action.get_preconditions()) {
+                nodes.push((PlanNode::child(self.current_state.clone(), *action), *cost));
             }
         }
         nodes
@@ -124,16 +98,16 @@ impl PlanNode {
 
 
 /// Formulates a plan to get from an initial state to a goal state using a set of allowed actions.
-pub fn plan<T: GoapAction + Sync + Send>(initial_state: &GoapPlannerWorkingFacts,
-            goal_state: &GoapPlannerWorkingFacts,
-            allowed_actions: &Vec<GAction<T>>)
-            -> Option<Vec<usize>> {
+pub fn plan<T: Action>(initial_state: &GoapPlannerWorkingFacts,
+                                         goal_state: &GoapPlannerWorkingFacts,
+                                         allowed_actions_with_cost: &Vec<(&T, u32)>)
+                                         -> Option<Vec<usize>> {
     // Builds our initial plan node.
     let start: PlanNode = PlanNode::initial(initial_state);
 
     // Runs our search over the states graph.
     if let Some((plan, _)) = astar(&start,
-                                   |ref node: &PlanNode| node.possible_next_nodes(allowed_actions, initial_state),
+                                   |ref node: &PlanNode| node.possible_next_nodes(allowed_actions_with_cost),
                                    |ref node: &PlanNode| node.mismatch_count(goal_state),
                                    |ref node: &PlanNode| node.matches_target(goal_state)) {
         Some(plan.into_iter().skip(1).map(|ref node| node.action.unwrap()).collect())

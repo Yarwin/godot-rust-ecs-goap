@@ -1,9 +1,11 @@
 use std::collections::HashMap;
 use hecs::Entity;
-use crate::goap::goap_planner::{GAction, GGoal, GoapPlannerWorkingFacts};
-use crate::{Instance, Vector2};
+use crate::goap::goap_planner::{GoapPlannerWorkingFacts};
+use gdnative::prelude::*;
 use crate::actions::actions_declaration::Actions;
 use crate::goals::goals_declaration::Goals;
+use crate::goap_system::action::GAction;
+use crate::goap_system::goal::GGoal;
 use crate::goap_system::godot_blackboard::GoapBlackboardNode;
 
 pub enum ThinkerActionState {

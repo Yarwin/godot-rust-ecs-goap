@@ -4,6 +4,7 @@ onready var vision := $Vision
 onready var attack_area := $Attack
 onready var physics_collision := $Vision/CollisionShape2D
 onready var animation_player := $AnimationPlayer
+onready var animation_tree := $AnimationTree
 var game_node
 var blackboard
 
@@ -22,12 +23,8 @@ func move_to(target):
 #	animation_player.play("run")
 	var direction = position.direction_to(target)
 	var _i = move_and_slide(velocity * direction)
+	animation_tree.running = true
 
-
-func play_animation(_animation_name):
-	pass
-#	animation_player.stop()
-#	animation_player.play(animation_name)
 
 
 func reload_collisions():

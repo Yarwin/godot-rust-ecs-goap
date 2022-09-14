@@ -49,7 +49,7 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://godot-src/Native/FindObjectSensorResource.gdns"
 }, {
-"base": "Resource",
+"base": "",
 "class": "GoalResource",
 "language": "NativeScript",
 "path": "res://godot-src/Native/GoalResource.gdns"

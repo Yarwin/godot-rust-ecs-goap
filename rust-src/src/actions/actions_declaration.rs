@@ -7,10 +7,10 @@ use hecs::{Entity, World};
 
 use crate::actions;
 use crate::ecs::GlobalStateResource;
-use crate::goap::goap_planner::{GoapAction, GoapPlannerWorkingFacts};
+use crate::goap::goap_planner::GoapPlannerWorkingFacts;
+use crate::goap_system::action::GoapAction;
 use crate::goap_system::ecs_thinker::GoapWorkingMemoryFacts;
 use crate::goap_system::godot_blackboard::GoapBlackboardNode;
-
 
 #[derive(GoapAction)]
 #[derive(Debug, Clone)]

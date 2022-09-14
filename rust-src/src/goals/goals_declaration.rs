@@ -1,5 +1,5 @@
 use derive_godot_resource::GoapGoal;
-use crate::goap::goap_planner::GoapGoal;
+use crate::goap_system::goal::GoapGoal;
 use gdnative::export::*;
 use gdnative::export::Export;
 use gdnative::export::hint::{EnumHint, IntHint};

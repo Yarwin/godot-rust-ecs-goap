@@ -14,13 +14,13 @@ impl GodotEntityId {
 
 impl ToVariant for GodotEntityId {
     fn to_variant(&self) -> Variant {
-        (u64::from(self.0.id())).to_variant()
+        (self.0.to_bits().get()).to_variant()
     }
 }
 
 impl FromVariant for GodotEntityId {
     fn from_variant(variant: &Variant) -> Result<Self, FromVariantError> {
-        Ok(GodotEntityId(Entity::from_bits(variant.to::<u64>().expect("Wrong variant")).expect("wrong variant")))
+        Ok(GodotEntityId(Entity::from_bits(variant.to::<u64>().expect("Wrong variant")).expect("Can't construct the Entity!")))
     }
 }
 

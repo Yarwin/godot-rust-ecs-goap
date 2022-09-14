@@ -6,13 +6,8 @@ use hecs::{Entity, World};
 
 use crate::components::agent_components::{GodotNode, Position};
 use crate::goap_system::ecs_thinker::{Attribute, GoapThinker, GoapWorkingMemoryFact, ThinkerActionState};
+use crate::goap_system::godot_blackboard::GodotEntityId;
 
-
-fn manhattan_dist(pos0: Vector2, pos1: Vector2) -> f32 {
-    let dx = (pos0.x - pos1.x).abs();
-    let dy = (pos0.y - pos1.y).abs();
-    dx + dy
-}
 
 pub trait Sensor {
     fn update(&mut self, world: &mut World, thinker: &mut GoapThinker, delta: f32);
@@ -23,7 +18,7 @@ pub struct UpdatePositionSensor();
 impl Sensor for UpdatePositionSensor {
     fn update(&mut self, world: &mut World, thinker: &mut GoapThinker, _delta: f32) {
         let (agent, position) = world.query_one_mut::<(&GodotNode, &mut Position)>(thinker.owner).unwrap();
-        let agent: TRef<Node> = unsafe { agent.godot_entity.assume_safe() };
+        let agent: TRef<Node2D> = unsafe { agent.godot_entity.assume_safe() };
         let result: Variant = unsafe {
             agent.call("get_position", &[])
         };
@@ -50,36 +45,32 @@ impl Sensor for FindObjectSensor {
             return;
         }
         self.elapsed = 0.0;
-        let (agent, owner_position) = world.query_one_mut::<(&mut GodotNode, &Position)>(thinker.owner).unwrap();
-        let owner_position = owner_position.position.clone();
-        let vec_of_strings = self.object_names.to_vec();
-        let godot_entity = agent.godot_entity.clone();
+        let agent = world.query_one_mut::<&mut GodotNode>(thinker.owner).unwrap();
+        let group_names = self.object_names.to_vec();
+        let godot_entity = agent.godot_entity;
+        let owner_position = unsafe { agent.godot_entity.assume_safe() }.global_position();
 
-        for object_name in vec_of_strings {
+        for object_name in group_names {
             let result: Variant = unsafe {
                 godot_entity.assume_safe().call("get_colliding_entities_from_group", &[object_name.to_variant(), ])
             };
-            let result = result.to::<Vec<(u32, Vector2)>>().unwrap();
+            let result = result.to::<Vec<(GodotEntityId, Vector2)>>().unwrap();
 
             if let Some(GoapWorkingMemoryFact::Objects(value)) = thinker.working_memory.get(&object_name.to_string()) {
-                if value.len() == result.len() {
-                    continue;
+                if value.len() != result.len() {
+                    thinker.state = ThinkerActionState::ShouldUpdate;
                 }
             }
 
 
             let result: Vec<Attribute<Entity>> = result.iter()
                 .map(
-                    |v| {
-                        let entity = unsafe { world.find_entity_from_id(v.0) }.clone();
-                        let mut entity_position = world.query_one::<&Position>(entity).unwrap();
-                        let entity_position = entity_position.get().unwrap();
+                    |(entity, _position)| {
+                        let mut entity_position = world.query_one::<&GodotNode>(entity.0).unwrap();
+                        let entity_position = unsafe { entity_position.get().unwrap().godot_entity.assume_safe() }.global_position();
                         Attribute {
-                            value: entity,
-                            confidence: (1.0 / manhattan_dist(
-                                owner_position,
-                                entity_position.position,
-                            ))
+                            value: entity.0,
+                            confidence: (1.0 / owner_position.distance_to(entity_position)),
                         }
                     }
                 ).collect();
@@ -101,7 +92,7 @@ impl Sensor for FindObjectSensor {
                     result
                 )
             );
-            thinker.state = ThinkerActionState::ShouldUpdate;
+
         }
     }
 

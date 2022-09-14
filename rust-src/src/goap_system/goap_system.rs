@@ -3,13 +3,15 @@ use gdnative::prelude::*;
 use hecs::{Entity, World};
 use crate::actions::actions_declaration::Actions;
 use crate::components::agent_components::Inventory;
-
+use crate::goap_system::action::GoapAction;
 use crate::ecs::GlobalStateResource;
 use crate::goals::goals_declaration::Goals;
 use crate::goap::example_sensors::Sensor;
-use crate::goap::goap_planner::{GAction, GGoal, GoapAction, GoapPlannerWorkingFacts, plan};
+use crate::goap::goap_planner::{GoapPlannerWorkingFacts, plan};
 use crate::goap_system::ecs_thinker::{GoapThinker, search_by_function, search_by_function_mut, ThinkerActionState};
-use crate::goap::goap_planner::GoapGoal;
+use crate::goap_system::action::GAction;
+use crate::goap_system::goal::GoapGoal;
+use crate::goap_system::goal::GGoal;
 
 pub fn system_update_dynamic_sensors<X>(thinkers: &mut World, world: &mut World, delta: f32)
     where X: 'static + Sensor + Send + Sync
@@ -56,7 +58,10 @@ fn goap_plan_system(world: &mut World, entity: Entity, thinker: &mut GoapThinker
         thinker.state = ThinkerActionState::Executing;
         thinker.current_goal = Some(g);
         let goal: &GGoal<Goals> = search_by_function(&thinker.goals_available, |goal| goal.id == g).unwrap();
-        let goap_plan = plan(&initial_state, &goal.desired_state, &thinker.actions_available);
+        let allowed_actions_with_cost: Vec<(&GAction<Actions>, u32)> = thinker.actions_available.iter().map(
+            |action| (action, action.action.get_cost(action.cost, &initial_state))
+        ).collect();
+        let goap_plan = plan(&initial_state, &goal.desired_state, &allowed_actions_with_cost);
         set!(thinker.blackboard, current_goal, GodotString::from(goal.name.clone()));
         if let Some(plan) = goap_plan {
             thinker.current_plan = Some(plan.clone());

@@ -27,7 +27,7 @@ pub fn system_remove_dead(world: &mut World) {
     for (id, (hp, node)) in world.query_mut::<(&mut Health, &mut GodotNode)>() {
         if hp.current <= 0 {
             to_remove.push(id);
-            let node: TRef<Node> = unsafe { node.godot_entity.assume_safe() };
+            let node: TRef<Node2D> = unsafe { node.godot_entity.assume_safe() };
             if node.has_method("on_death") {
                 // IMPORTANT - NODE SHOULD HANDLE ITS DELETION (for example by calling the queue_free) BY ITSELF
                 unsafe { node.call(GodotString::from("on_death"), &[]) };
@@ -45,7 +45,7 @@ pub fn system_remove_picked_items(world: &mut World) {
     for (id, (item, node)) in world.query_mut::<(&mut Collectible, &mut GodotNode)>() {
         if item.picked {
             to_remove.push(id);
-            let node: TRef<Node> = unsafe { node.godot_entity.assume_safe() };
+            let node: TRef<Node2D> = unsafe { node.godot_entity.assume_safe() };
             if node.has_method("on_death") {
                 // IMPORTANT - NODE SHOULD HANDLE ITS DELETION (for example by calling the queue_free) BY ITSELF
                 unsafe { node.call(GodotString::from("on_death"), &[]) };

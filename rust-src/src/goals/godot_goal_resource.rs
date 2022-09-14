@@ -1,7 +1,8 @@
 use gdnative::prelude::*;
 use gdnative::api::*;
 use crate::goals::goals_declaration::Goals;
-use crate::goap::goap_planner::{GGoal, GoapPlannerWorkingFacts};
+use crate::goap::goap_planner::{GoapPlannerWorkingFacts};
+use crate::goap_system::goal::GGoal;
 
 
 #[derive(NativeClass)]

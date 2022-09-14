@@ -133,7 +133,7 @@ animation = "attack"
 animation = "run"
 
 [sub_resource type="AnimationNodeBlendTree" id=26]
-graph_offset = Vector2( 213.44, -67.0784 )
+graph_offset = Vector2( -87.5705, 47.8526 )
 nodes/Attacking/node = SubResource( 24 )
 nodes/Attacking/position = Vector2( 800, 200 )
 nodes/Idle/node = SubResource( 23 )
@@ -154,7 +154,6 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 6
-frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.5, 3 )

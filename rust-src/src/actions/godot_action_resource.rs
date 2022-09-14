@@ -1,7 +1,8 @@
 use gdnative::prelude::*;
 use gdnative::api::*;
 use crate::actions::actions_declaration::Actions;
-use crate::goap::goap_planner::{GAction, GoapPlannerWorkingFacts};
+use crate::goap::goap_planner::{GoapPlannerWorkingFacts};
+use crate::goap_system::action::{GAction};
 
 #[derive(NativeClass)]
 #[derive(ToVariant, FromVariant)]
