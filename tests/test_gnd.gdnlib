@@ -1,0 +1,14 @@
+[general]
+
+singleton=false
+load_once=true
+symbol_prefix="godot_"
+reloadable=true
+
+[entry]
+
+X11.64="res://godot-ecs-goap-tests/target/debug/libgodot_rust_goap_ecs_tests.so"
+
+[dependencies]
+
+X11.64=[  ]

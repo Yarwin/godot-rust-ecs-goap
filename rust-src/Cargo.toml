@@ -9,11 +9,11 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-gdnative = { version = "0.10.0", features = ["formatted"] }
+gdnative = { version = "0.10.0", features = ["formatted", "gd-test", "serde", "async"] }
 hecs = "0.7.6"
 backtrace = "0.3"
 rand = "0.8.5"
-derive-godot-resource = { path = "./derive-godot-resource"}
+derive-godot-resource = { path = "derive-godot-resource"}
 pathfinding = "3.0"
 
 [build-dependencies]

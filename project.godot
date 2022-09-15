@@ -59,6 +59,16 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://godot-src/Native/GoapBlackboardNode.gdns"
 }, {
+"base": "Reference",
+"class": "GutHookScript",
+"language": "GDScript",
+"path": "res://addons/gut/hook_script.gd"
+}, {
+"base": "Node",
+"class": "GutTest",
+"language": "GDScript",
+"path": "res://addons/gut/test.gd"
+}, {
 "base": "",
 "class": "HealthResource",
 "language": "NativeScript",
@@ -105,6 +115,8 @@ _global_script_class_icons={
 "FindObjectSensorResource": "",
 "GoalResource": "",
 "GoapBlackboardNode": "",
+"GutHookScript": "",
+"GutTest": "",
 "HealthResource": "",
 "InventoryResource": "",
 "Node2DEntity": "",
@@ -135,7 +147,7 @@ window/stretch/aspect="keep_width"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/imrp/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/gut/plugin.cfg", "res://addons/imrp/plugin.cfg" )
 
 [gui]
 
