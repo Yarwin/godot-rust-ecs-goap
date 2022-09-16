@@ -1,6 +1,7 @@
 use gdnative::prelude::*;
 use gdnative_core::godot_itest;
 
+mod test_goap_planner;
 
 #[no_mangle]
 pub extern "C" fn run_tests(
@@ -9,7 +10,7 @@ pub extern "C" fn run_tests(
 ) -> gdnative::sys::godot_variant {
     let mut status = true;
     status &= test_it_works();
-    status &= test_it_fails();
+    status &= test_goap_planner::run_tests();
     Variant::new(status).leak()
 }
 
@@ -18,8 +19,6 @@ godot_itest! { test_it_works {
         assert_eq!(result, 4);
     }
 }
-
-
 
 
 

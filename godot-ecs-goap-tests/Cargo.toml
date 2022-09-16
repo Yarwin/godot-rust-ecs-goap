@@ -8,8 +8,8 @@ publish = false
 crate-type = ["cdylib"]
 
 [dependencies]
-godot-rust-goap-ecs = {path = "../rust-src"}
-gdnative = { version = "0.10.0", features = ["formatted"] }
+godot-rust-goap-ecs = {path = "../rust-src", default-features = false}
+gdnative = { version = "0.10.0", features = ["formatted", "async"] }
 gdnative-core = { version = "0.10.0" }
 hecs = "0.7.6"
 backtrace = "0.3"

@@ -53,7 +53,7 @@ pub mod actions;
 pub mod goap_system;
 pub mod goals;
 
-
+#[cfg(feature = "entry-point")]
 use godot::register_classes;
-
+#[cfg(feature = "entry-point")]
 godot_init!(register_classes);
