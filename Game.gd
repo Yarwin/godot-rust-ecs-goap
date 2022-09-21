@@ -6,7 +6,7 @@ onready var entities := get_node("%Entities")
 onready var spawn_point := get_node("%Spawnpoint")
 
 var ecs_handle_entity := preload("res://godot-src/Entities/EditorEntity/EditorEntity.tscn")
-var firepit_blueprint := preload("res://godot-src/Entities/StaticEntity/firepit/firepit_resource.tres")
+var firepit_blueprint := preload("res://godot-src/Entities/blueprints/firepit_resource.tres")
 
 
 ###############################################################################

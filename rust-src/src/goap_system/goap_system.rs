@@ -59,7 +59,7 @@ fn goap_plan_system(world: &mut World, entity: Entity, thinker: &mut GoapThinker
         thinker.current_goal = Some(g);
         let goal: &GGoal<Goals> = search_by_function(&thinker.goals_available, |goal| goal.id == g).unwrap();
         let allowed_actions_with_cost: Vec<(&GAction<Actions>, u32)> = thinker.actions_available.iter().map(
-            |action| (action, action.action.get_cost(action.cost, &initial_state))
+            |action| (action, action.action.get_cost(action.cost, &thinker.working_memory))
         ).collect();
         let goap_plan = plan(&initial_state, &goal.desired_state, &allowed_actions_with_cost);
         set!(thinker.blackboard, current_goal, GodotString::from(goal.name.clone()));

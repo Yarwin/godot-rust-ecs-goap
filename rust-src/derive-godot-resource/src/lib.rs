@@ -208,7 +208,7 @@ pub fn derive_goap_action(input: TokenStream) -> TokenStream {
             ),
             gen_description_str_for_enum(&my_enum,
                                          "get_cost",
-                                         quote!{original_cost, current_state},
+                                         quote!{original_cost, working_memory},
                                          &enum_name_ident
             )
         ),
@@ -223,7 +223,7 @@ pub fn derive_goap_action(input: TokenStream) -> TokenStream {
                 }
             }
 
-            fn get_cost(&self, original_cost: u32, current_state: &GoapPlannerWorkingFacts) -> u32 {
+            fn get_cost(&self, original_cost: u32, working_memory: &GoapWorkingMemoryFacts) -> u32 {
                 match self {
                     #get_cost
                 }

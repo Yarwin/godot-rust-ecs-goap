@@ -9,6 +9,11 @@ export (Texture) var editor_sprite
 func _ready() -> void:
 	if Engine.editor_hint and editor_sprite:
 		sprite.texture = editor_sprite
+	elif Engine.editor_hint and entity_data and entity_data.root_node:
+		for variant in entity_data.root_node._bundled["variants"]:
+			if variant is AtlasTexture:
+				sprite.texture = variant
+		
 	elif not Engine.editor_hint:
 		var game_manager := get_tree().get_root().get_node("Game")
 		yield(get_tree(), "idle_frame")

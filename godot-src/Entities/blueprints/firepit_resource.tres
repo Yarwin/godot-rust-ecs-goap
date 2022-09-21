@@ -1,15 +1,15 @@
 [gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://godot-src/Native/EntityResource.gdns" type="Script" id=1]
-[ext_resource path="res://godot-src/Entities/StaticEntity/firepit/components/firepit_health.tres" type="Resource" id=2]
+[ext_resource path="res://godot-src/Entities/StaticEntity/firepit/components/regeneration_firepit.tres" type="Resource" id=2]
 [ext_resource path="res://godot-src/Entities/StaticEntity/firepit/firepit.tscn" type="PackedScene" id=3]
-[ext_resource path="res://godot-src/Entities/StaticEntity/firepit/components/regeneration_firepit.tres" type="Resource" id=4]
+[ext_resource path="res://godot-src/Entities/StaticEntity/firepit/components/firepit_health.tres" type="Resource" id=4]
 
 [resource]
 script = ExtResource( 1 )
 root_node = ExtResource( 3 )
-components = [ ExtResource( 2 ), ExtResource( 4 ) ]
-is_ai_agent = null
+components = [ ExtResource( 4 ), ExtResource( 2 ) ]
+is_ai_agent = false
 actions = null
 goals = null
 sensors = null

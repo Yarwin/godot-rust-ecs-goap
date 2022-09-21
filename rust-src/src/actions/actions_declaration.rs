@@ -19,6 +19,8 @@ pub enum Actions {
     FindTree,
     #[implementation="actions::chop_tree"]
     ChopTree,
+    #[implementation="actions::get_wood_from_stack"]
+    GetWoodFromStack,
     #[implementation="actions::collect_wood"]
     CollectWood,
     #[implementation="actions::build_firepit"]
@@ -38,11 +40,12 @@ impl FromVariant for Actions {
         match result {
             1 => Ok(Actions::FindTree),
             2 => Ok(Actions::ChopTree),
-            3 => Ok(Actions::CollectWood),
+            3 => Ok(Actions::GetWoodFromStack),
             4 => Ok(Actions::BuildFirepit),
             5 => Ok(Actions::FindCover),
             6 => Ok(Actions::FindFood),
             7 => Ok(Actions::CalmDown),
+            8 => Ok(Actions::CollectWood),
             _ => Err(FromVariantError::UnknownEnumVariant {
                 variant: "i64".to_owned(),
                 expected: &["0", "1", "2", "3", "4", "5", "6"],
@@ -56,11 +59,12 @@ impl ToVariant for Actions {
         match self {
             Actions::FindTree => {1.to_variant()},
             Actions::ChopTree => {2.to_variant()},
-            Actions::CollectWood => {3.to_variant()},
+            Actions::GetWoodFromStack => {3.to_variant()},
             Actions::BuildFirepit => {4.to_variant()},
             Actions::FindCover => {5.to_variant()},
             Actions::FindFood => {6.to_variant()},
             Actions::CalmDown => {7.to_variant()},
+            Actions::CollectWood => {8.to_variant()},
         }
     }
 }
@@ -73,11 +77,12 @@ impl Export for Actions {
             "None".to_owned(),
             "FindTree".to_owned(),
             "ChopTree".to_owned(),
-            "CollectWood".to_owned(),
+            "GetWoodFromStack".to_owned(),
             "BuildFirepit".to_owned(),
             "FindCover".to_owned(),
             "FindFood".to_owned(),
             "CalmDown".to_owned(),
+            "CollectWood".to_owned(),
         ]))
             .export_info()
     }

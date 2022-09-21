@@ -13,16 +13,22 @@ pub fn is_valid(_current_state: &GoapPlannerWorkingFacts) -> bool {
 }
 
 pub fn get_cost(original_cost: u32, working_memory: &GoapWorkingMemoryFacts) -> u32 {
-    return original_cost
+    if let Some(GoapWorkingMemoryFact::Objects(wood_pieces)) = working_memory.get("wood") {
+        if let Some(wood_piece) = get_least_desirable(wood_pieces) {
+            return (wood_piece.confidence / 3.5) as u32;
+        };
+
+    }
+    return 100;
 }
 
 fn update_closest_wood_position(working_memory: &mut GoapWorkingMemoryFacts, world: &mut World, blackboard: &mut Instance<GoapBlackboardNode>) {
     if let Some(GoapWorkingMemoryFact::Objects(wood_pieces)) = working_memory.get(&String::from("wood")) {
-        let closest_wood = if let Some(wood) = get_least_desirable(wood_pieces) {
-            wood.value
-        } else {
-            return;
-        };
+            let closest_wood = if let Some(wood) = get_least_desirable(wood_pieces) {
+                wood.value
+            } else {
+                return;
+            };
 
         set!(blackboard, pickup_object, Some(GodotEntityId::from_entity(closest_wood)));
         let mut wood_pos = match world.query_one::<&Position>(closest_wood) {

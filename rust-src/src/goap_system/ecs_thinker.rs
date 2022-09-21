@@ -30,6 +30,28 @@ pub enum GoapWorkingMemoryFact {
     Desire(Attribute<u32>)
 }
 
+pub fn get_least_desirable<T>(attributes: &Vec<Attribute<T>>) -> Option<&Attribute<T>> {
+    if attributes.len() == 0 {
+        return None
+    }
+    let most_desirable: &Attribute<T> = attributes
+        .iter()
+        .fold(
+            None::<&Attribute<T>>, |a, b|  {
+                return match a {
+                    Some(attribute) => {
+                        if attribute.confidence < b.confidence {
+                            return Some(attribute)
+                        }
+                        Some(b)
+                    }
+                    None => Some(b)
+                };
+            }
+        ).unwrap();
+    return Some(most_desirable)
+}
+
 pub fn get_most_desirable<T>(attributes: &Vec<Attribute<T>>) -> Option<&Attribute<T>> {
     if attributes.len() == 0 {
         return None

@@ -1,0 +1,45 @@
+{
+  "actions": [
+    {
+      "id": 1,
+      "name": "A to B",
+      "cost": 1,
+      "pre_conditions": {
+      },
+      "post_conditions": {
+        "B": true
+      }
+    },
+    {
+      "id": 2,
+      "name": "B to win",
+      "cost": 2,
+      "pre_conditions": {
+        "B": true
+      },
+      "post_conditions": {
+        "win": true
+      }
+    },
+    {
+      "id": 3,
+      "name": "C to win",
+      "cost": 4,
+      "pre_conditions": {
+      },
+      "post_conditions": {
+        "win": true
+      }
+    }
+  ],
+
+  "initial_state": {
+  },
+  "goal_state": {
+    "win": true
+  },
+  "expected_actions": [
+    1,
+    2
+  ]
+}

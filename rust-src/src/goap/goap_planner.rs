@@ -2,13 +2,8 @@
 
 use std::collections::{HashMap};
 use std::hash::{Hash, Hasher};
-use gdnative::prelude::*;
-use hecs::{Entity, World};
 
 use pathfinding::prelude::astar;
-use crate::ecs::{GlobalStateResource};
-use crate::goap_system::ecs_thinker::GoapWorkingMemoryFacts;
-use crate::goap_system::godot_blackboard::GoapBlackboardNode;
 
 /// working memory facts used to formulate a working plan
 pub type GoapPlannerWorkingFacts = HashMap<String, bool>;
@@ -99,9 +94,9 @@ impl PlanNode {
 
 /// Formulates a plan to get from an initial state to a goal state using a set of allowed actions.
 pub fn plan<T: Action>(initial_state: &GoapPlannerWorkingFacts,
-                                         goal_state: &GoapPlannerWorkingFacts,
-                                         allowed_actions_with_cost: &Vec<(&T, u32)>)
-                                         -> Option<Vec<usize>> {
+                       goal_state: &GoapPlannerWorkingFacts,
+                       allowed_actions_with_cost: &Vec<(&T, u32)>)
+                       -> Option<Vec<usize>> {
     // Builds our initial plan node.
     let start: PlanNode = PlanNode::initial(initial_state);
 
@@ -115,3 +110,98 @@ pub fn plan<T: Action>(initial_state: &GoapPlannerWorkingFacts,
         None
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    extern crate serde_json;
+    use super::*;
+    use serde_derive::*;
+    use std::path::Path;
+    use std::fs;
+
+    #[derive(Deserialize)]
+    struct TestAction {
+        /// A simple implementation of our GOAP action
+        id: usize,
+        name: String,
+        pre_conditions: GoapPlannerWorkingFacts,
+        post_conditions: GoapPlannerWorkingFacts,
+        cost: u32
+    }
+
+    impl Action for TestAction {
+        fn get_id(&self) -> usize {
+            self.id
+        }
+        fn get_name(&self) -> String {
+            self.name.clone()
+        }
+
+        fn get_preconditions(&self) -> &GoapPlannerWorkingFacts {
+            &self.pre_conditions
+        }
+
+        fn get_post_conditions(&self) -> &GoapPlannerWorkingFacts {
+            &self.post_conditions
+        }
+    }
+
+    #[derive(Deserialize)]
+    struct TestCase {
+        #[serde(skip_deserializing)]
+        case_name: String,
+        actions: Vec<TestAction>,
+        initial_state: GoapPlannerWorkingFacts,
+        goal_state: GoapPlannerWorkingFacts,
+        expected_actions: Vec<u32>,
+    }
+
+    impl TestCase {
+        /// Loads a test case from a JSON file.
+        fn from_case_file(path: &Path) -> TestCase {
+            let file = fs::File::open(path).unwrap();
+            let mut case: TestCase = serde_json::from_reader(file).unwrap();
+            case.case_name = String::from(path.file_name().unwrap().to_str().unwrap());
+            case
+        }
+
+        /// Checks if the computed plan matches the expectation.
+        fn assert_plan(&self) {
+            let actions_refs_with_cost: Vec<(&TestAction, u32)> = self.actions
+                    .iter()
+                    .map(
+                        |action|
+                            (action, action.cost.clone())
+                    ).collect();
+
+            let plan = plan(&self.initial_state, &self.goal_state, &actions_refs_with_cost);
+
+            if let Some(actions_list) = plan {
+                if self.expected_actions != self.expected_actions {
+                    panic!("{} failed: expected {:?}, got {:?}",
+                           self.case_name,
+                           self.expected_actions,
+                    actions_list);
+                }
+            } else {
+                if self.expected_actions.len() > 0 {
+                    panic!("{} failed: expected {:?}, got no plan",
+                           self.case_name,
+                           self.expected_actions);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn run_test_files() {
+        let paths = fs::read_dir("./test_data").unwrap();
+        for path in paths {
+            let case = TestCase::from_case_file(path.unwrap().path().as_path());
+            case.assert_plan();
+        }
+    }
+
+}
+

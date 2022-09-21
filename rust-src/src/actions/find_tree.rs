@@ -10,7 +10,7 @@ pub fn is_valid(_current_state: &GoapPlannerWorkingFacts) -> bool {
     true
 }
 
-pub fn get_cost(original_cost: u32, _current_state: &GoapPlannerWorkingFacts) -> u32 {
+pub fn get_cost(original_cost: u32, working_memory: &GoapWorkingMemoryFacts) -> u32 {
     original_cost
 }
 

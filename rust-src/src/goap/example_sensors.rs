@@ -40,7 +40,8 @@ pub struct FindObjectSensor {
 
 impl Sensor for FindObjectSensor {
     fn update(&mut self, world: &mut World, thinker: &mut GoapThinker, delta: f32) {
-        if self.elapsed < self.update_every {
+        if let ThinkerActionState::ShouldUpdate = thinker.state {}
+        else if self.elapsed < self.update_every {
             self.elapsed += delta;
             return;
         }
@@ -70,7 +71,7 @@ impl Sensor for FindObjectSensor {
                         let entity_position = unsafe { entity_position.get().unwrap().godot_entity.assume_safe() }.global_position();
                         Attribute {
                             value: entity.0,
-                            confidence: (1.0 / owner_position.distance_to(entity_position)),
+                            confidence: (owner_position.distance_to(entity_position)),
                         }
                     }
                 ).collect();

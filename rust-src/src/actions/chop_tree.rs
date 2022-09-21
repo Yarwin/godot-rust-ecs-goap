@@ -3,7 +3,7 @@ use hecs::{Entity, World};
 use crate::components::agent_components::Position;
 use crate::ecs::GlobalStateResource;
 use crate::goap::goap_planner::GoapPlannerWorkingFacts;
-use crate::goap_system::ecs_thinker::{get_most_desirable, GoapWorkingMemoryFact, GoapWorkingMemoryFacts};
+use crate::goap_system::ecs_thinker::{get_most_desirable, get_least_desirable, GoapWorkingMemoryFact, GoapWorkingMemoryFacts};
 use crate::goap_system::godot_blackboard::{GoapBlackboardNode, GodotEntityId};
 
 
@@ -11,13 +11,19 @@ pub fn is_valid(_current_state: &GoapPlannerWorkingFacts) -> bool {
     true
 }
 
-pub fn get_cost(original_cost: u32, _current_state: &GoapPlannerWorkingFacts) -> u32 {
-    original_cost
+pub fn get_cost(original_cost: u32, working_memory: &GoapWorkingMemoryFacts) -> u32 {
+    if let Some(GoapWorkingMemoryFact::Objects(trees)) = working_memory.get("tree") {
+        if let Some(tree) = get_least_desirable(trees) {
+            return (tree.confidence / 7.0) as u32;
+        };
+
+    }
+    return 100;
 }
 
 pub fn update_closest_tree_position(working_memory: &mut GoapWorkingMemoryFacts, world: &mut World, blackboard: &mut Instance<GoapBlackboardNode>) {
     if let Some(GoapWorkingMemoryFact::Objects(trees)) = working_memory.get("tree") {
-        let closest_tree = if let Some(tree) = get_most_desirable(trees) {
+        let closest_tree = if let Some(tree) = get_least_desirable(trees) {
             tree.value
         } else {
             return;

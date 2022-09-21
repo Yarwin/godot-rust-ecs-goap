@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource( 1 )
-action = 3
-cost = 1
+action = 8
+cost = 2
 name = "Collect wood"
 pre_conditions = {
-"see_wood": true
+"chopped_tree": true
 }
 post_conditions = {
 "has_wood": true

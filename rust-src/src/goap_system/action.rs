@@ -18,7 +18,7 @@ pub struct GAction<T: GoapAction + Sync + Send> {
 
 pub trait GoapAction {
     fn is_valid(&self, current_state: &GoapPlannerWorkingFacts) -> bool;
-    fn get_cost(&self, original_cost: u32, current_state: &GoapPlannerWorkingFacts) -> u32;
+    fn get_cost(&self, original_cost: u32, working_memory: &GoapWorkingMemoryFacts) -> u32;
     fn perform(&mut self,
                working_memory: &mut GoapWorkingMemoryFacts,
                owner: Entity,
