@@ -74,6 +74,11 @@ _global_script_classes=[ {
 "language": "NativeScript",
 "path": "res://godot-src/Native/HealthResource.gdns"
 }, {
+"base": "Resource",
+"class": "HungerResource",
+"language": "NativeScript",
+"path": "res://godot-src/Native/HungerResource.gdns"
+}, {
 "base": "",
 "class": "InventoryResource",
 "language": "NativeScript",
@@ -118,6 +123,7 @@ _global_script_class_icons={
 "GutHookScript": "",
 "GutTest": "",
 "HealthResource": "",
+"HungerResource": "",
 "InventoryResource": "",
 "Node2DEntity": "",
 "RegenerationResource": "",

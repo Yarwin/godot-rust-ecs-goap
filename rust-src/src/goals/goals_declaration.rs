@@ -15,6 +15,8 @@ use crate::goals;
 pub enum Goals {
     #[implementation="goals::default_goal"]
     DefaultGoal,
+    #[implementation="goals::keep_fed"]
+    KeepFedGoal,
 }
 
 
@@ -23,9 +25,10 @@ impl FromVariant for Goals {
         let result = i64::from_variant(variant)?;
         match result {
             1 => Ok(Goals::DefaultGoal),
+            2 => Ok(Goals::KeepFedGoal),
             _ => Err(FromVariantError::UnknownEnumVariant {
                 variant: "i64".to_owned(),
-                expected: &["None", "1"],
+                expected: &["None", "1", "2"],
             }),
         }
     }
@@ -37,6 +40,7 @@ impl ToVariant for Goals {
     fn to_variant(&self) -> Variant {
         match self {
             Goals::DefaultGoal => {1.to_variant()},
+            Goals::KeepFedGoal => {2.to_variant()},
         }
     }
 }
@@ -49,6 +53,7 @@ impl Export for Goals {
         Self::Hint::Enum(EnumHint::new(vec![
             "None".to_owned(),
             "DefaultGoal".to_owned(),
+            "KeepFedGoal".to_owned(),
         ]))
             .export_info()
     }

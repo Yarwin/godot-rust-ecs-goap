@@ -15,14 +15,13 @@ pub struct Position {
     pub position: Vector2
 }
 
-
 #[derive(Debug, Default)]
 #[derive(ComponentGodotResource)]
-pub struct Thirst {
+pub struct Hunger {
     #[expose_by_resource]
-    pub per_second: f32,
-    pub thirst: f32,
+    pub amount_per_second: f32,
 }
+
 
 #[derive(Debug, Default)]
 #[derive(ComponentGodotResource)]

@@ -74,6 +74,7 @@ fn main() {
             resource!(components::agent_components::Inventory),
             resource!(components::agent_components::Regeneration),
             resource!(goap::example_sensors::FindObjectSensor, ExportType::AIResource),
+            resource!(components::agent_components::Hunger, ExportType::AIResource),
         ],
         mods: vec![
             "ecs".to_string(),

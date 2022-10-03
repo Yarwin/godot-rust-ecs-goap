@@ -145,7 +145,7 @@ nodes/attack/position = Vector2( 300, 320 )
 nodes/output/position = Vector2( 1060, 100 )
 nodes/run/node = SubResource( 21 )
 nodes/run/position = Vector2( 300, 160 )
-node_connections = [ "output", 0, "Attacking", "Running", 0, "Idle", "Running", 1, "run", "Attacking", 0, "Running", "Attacking", 1, "attack" ]
+node_connections = [ "output", 0, "Attacking", "Attacking", 0, "Running", "Attacking", 1, "attack", "Running", 0, "Idle", "Running", 1, "run" ]
 
 [node name="KinematicBody2D" type="KinematicBody2D" groups=["pretendent"]]
 script = ExtResource( 1 )
@@ -154,7 +154,7 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 6
-frame = 3
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.5, 3 )

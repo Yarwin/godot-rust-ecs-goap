@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=16 format=2]
+[gd_resource type="Resource" load_steps=15 format=2]
 
 [ext_resource path="res://godot-src/Native/EntityResource.gdns" type="Script" id=1]
 [ext_resource path="res://godot-src/Entities/sample_entity/components/sample_agent_movement.tres" type="Resource" id=2]
@@ -13,7 +13,6 @@
 [ext_resource path="res://godot-src/Entities/sample_entity/ai_components/goals/calm_down.tres" type="Resource" id=11]
 [ext_resource path="res://godot-src/Entities/sample_entity/ai_components/goals/relax.tres" type="Resource" id=12]
 [ext_resource path="res://godot-src/Entities/sample_entity/components/sample_agent_inventory.tres" type="Resource" id=13]
-[ext_resource path="res://godot-src/Entities/sample_entity/ai_components/sensors/object_vision_sensor.tres" type="Resource" id=14]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 3 )
@@ -27,4 +26,4 @@ components = [ SubResource( 1 ), ExtResource( 2 ), ExtResource( 13 ) ]
 is_ai_agent = true
 actions = [ ExtResource( 7 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 6 ) ]
 goals = [ ExtResource( 11 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 12 ) ]
-sensors = [ ExtResource( 14 ) ]
+ai_components = null

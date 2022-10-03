@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-goal = 1
-priority = 1
+goal = 2
+priority = 2
 name = "Keep Fed"
 desired_state = {
 "is_hungry": false

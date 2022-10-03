@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource( 1 )
 update_every = 0.33
-object_names = PoolStringArray( "tree", "wood" )
+object_names = PoolStringArray( "tree", "wood", "food" )

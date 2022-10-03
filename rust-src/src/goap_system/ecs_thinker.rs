@@ -13,6 +13,8 @@ pub enum ThinkerActionState {
     ShouldUpdate,
     /// Thinker has some plan and will execute it ASAP
     Executing,
+    /// due to some action taken the sensors state has been changed – they should be recalculated during the next frame
+    UpdateSensorsAndExecute,
 }
 
 #[derive(Debug)]
@@ -27,7 +29,7 @@ pub type GoapWorkingMemoryFacts = HashMap<String, GoapWorkingMemoryFact>;
 pub enum GoapWorkingMemoryFact {
     Positions(Vec<Attribute<Vector2>>),
     Objects(Vec<Attribute<Entity>>),
-    Desire(Attribute<u32>)
+    Desire(Attribute<f32>)
 }
 
 pub fn get_least_desirable<T>(attributes: &Vec<Attribute<T>>) -> Option<&Attribute<T>> {

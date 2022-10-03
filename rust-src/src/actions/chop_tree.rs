@@ -3,7 +3,7 @@ use hecs::{Entity, World};
 use crate::components::agent_components::Position;
 use crate::ecs::GlobalStateResource;
 use crate::goap::goap_planner::GoapPlannerWorkingFacts;
-use crate::goap_system::ecs_thinker::{get_most_desirable, get_least_desirable, GoapWorkingMemoryFact, GoapWorkingMemoryFacts};
+use crate::goap_system::ecs_thinker::{get_least_desirable, GoapWorkingMemoryFact, GoapWorkingMemoryFacts};
 use crate::goap_system::godot_blackboard::{GoapBlackboardNode, GodotEntityId};
 
 
@@ -14,7 +14,7 @@ pub fn is_valid(_current_state: &GoapPlannerWorkingFacts) -> bool {
 pub fn get_cost(original_cost: u32, working_memory: &GoapWorkingMemoryFacts) -> u32 {
     if let Some(GoapWorkingMemoryFact::Objects(trees)) = working_memory.get("tree") {
         if let Some(tree) = get_least_desirable(trees) {
-            return (tree.confidence / 7.0) as u32;
+            return original_cost * ((tree.confidence / 3.5) as u32);
         };
 
     }

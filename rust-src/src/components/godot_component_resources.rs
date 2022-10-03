@@ -18,7 +18,7 @@ pub struct EntityResource {
     #[property]
     pub goals: Option<VariantArray>,
     #[property]
-    pub sensors: Option<VariantArray>
+    pub ai_components: Option<VariantArray>
 }
 
 #[methods]
@@ -30,7 +30,7 @@ impl EntityResource {
             is_ai_agent: false,
             actions: None,
             goals: None,
-            sensors: None
+            ai_components: None
         }
     }
 }

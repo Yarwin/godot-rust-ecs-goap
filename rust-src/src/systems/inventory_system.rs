@@ -5,7 +5,7 @@ use hecs::World;
 
 use crate::components::agent_components::{Collectible, GodotNode, Inventory};
 use crate::ecs::EcsEvent;
-use crate::goap_system::ecs_thinker::GoapThinker;
+use crate::goap_system::ecs_thinker::{GoapThinker, GoapWorkingMemoryFact};
 
 pub fn system_pickup_items(world: &mut World, thinkers: &mut World) {
     for (entity, thinker) in thinkers.query_mut::<&mut GoapThinker>() {
@@ -54,6 +54,22 @@ pub fn system_crafting(world: &mut World, thinkers: &mut World, event_queue: &mu
                                 GodotString::from("firepit"),
                                 None,
                                 extract!(thinker.blackboard, interact_position)))
+                        }
+                    }
+
+                }
+                "eat_food" => {
+                    let inventory = world.query_one_mut::<&mut Inventory>(entity).unwrap();
+                    match inventory.items.get_mut(&GodotString::from("food")) {
+                        None => {}
+                        Some(i) => {
+                            if *i == 0 {
+                                continue
+                            }
+                            *i -= 1;
+                            if let Some(GoapWorkingMemoryFact::Desire(hunger_attribute)) = thinker.working_memory.get_mut("hunger") {
+                                hunger_attribute.value = 0.0;
+                            }
                         }
                     }
 

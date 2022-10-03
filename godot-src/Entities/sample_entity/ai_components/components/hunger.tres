@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://godot-src/Native/HungerResource.gdns" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+amount_per_second = 4.2

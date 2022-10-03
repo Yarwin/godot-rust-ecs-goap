@@ -6,6 +6,14 @@ use crate::goap_system::ecs_thinker::GoapWorkingMemoryFacts;
 use crate::goap_system::godot_blackboard::GoapBlackboardNode;
 
 
+pub enum ActionResultEnum {
+    Continue,
+    ContinueAndUpdateSensors,
+    Finished,
+    FinishAndUpdateSensors
+}
+
+
 pub struct GAction<T: GoapAction + Sync + Send> {
     pub id: usize,
     pub name: String,

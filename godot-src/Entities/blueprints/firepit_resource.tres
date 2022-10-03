@@ -12,4 +12,4 @@ components = [ ExtResource( 4 ), ExtResource( 2 ) ]
 is_ai_agent = false
 actions = null
 goals = null
-sensors = null
+ai_components = null

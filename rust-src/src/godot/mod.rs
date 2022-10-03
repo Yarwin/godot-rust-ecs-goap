@@ -16,5 +16,6 @@ pub fn register_classes(handle: gdnative::init::InitHandle) {
 	handle.add_class::<components::agent_components::InventoryResource>();
 	handle.add_class::<components::agent_components::RegenerationResource>();
 	handle.add_class::<goap::example_sensors::FindObjectSensorResource>();
+	handle.add_class::<components::agent_components::HungerResource>();
     init_hook::init_panic_hook();
 }

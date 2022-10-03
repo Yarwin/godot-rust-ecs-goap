@@ -108,6 +108,7 @@ pub fn goap_system(thinkers: &mut World, world: &mut World, global_state: &Globa
             ThinkerActionState::Executing => {
                 goap_execute_action_system(thinker, global_facts, global_state, owner, world);
             }
+            _ => {}
         }
     }
 }

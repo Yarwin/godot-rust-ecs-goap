@@ -7,9 +7,8 @@
 atlas = ExtResource( 1 )
 region = Rect2( 96.6365, 115.263, 15.5338, 10.8182 )
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 5.0
-height = 0.0
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 7, 5 )
 
 [node name="Node2D" type="StaticBody2D" groups=["wood"]]
 script = ExtResource( 2 )

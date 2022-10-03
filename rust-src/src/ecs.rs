@@ -13,6 +13,7 @@ use crate::goap_system::goap_system::{goap_system, system_update_dynamic_sensors
 use crate::godot_entity_builder;
 use crate::systems::godot_output_system::system_send_events;
 use crate::systems::health_systems::{system_regeneration, system_remove_dead, system_remove_picked_items, system_update_health};
+use crate::systems::hunger_system::system_hunger;
 use crate::systems::inventory_system::{system_crafting, system_pickup_items};
 use crate::systems::navigation_system::navigation_system;
 use crate::systems::targeting_system::targeting_system;
@@ -190,6 +191,7 @@ impl Ecs {
 
         // run "static" systems
         system_regeneration(&mut self.world, delta);
+        system_hunger(&mut self.thinkers, delta);
 
         // system_reset_collision_shapes - if we spawn new entity DIRECTLY inside the godot node area2D collision shape it won't be caught by the godot engine
 
