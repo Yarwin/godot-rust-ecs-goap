@@ -47,7 +47,7 @@ func attack():
 	var bodies_return = Array()
 	var bodies = attack_area.get_overlapping_bodies()
 	for body in bodies:
-		if body == self or not body.entity_id:
+		if body == self or not ("entity_id" in body):
 			continue
 		game_node.ecs.add_input(
 			{"EntityDamaged": {

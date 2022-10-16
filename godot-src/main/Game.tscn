@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Game.gd" type="Script" id=1]
 [ext_resource path="res://godot-src/main/GUI_handler.gd" type="Script" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://godot-src/Entities/blueprints/food.tres" type="Resource" id=11]
 [ext_resource path="res://godot-src/main/add_resource.gd" type="Script" id=12]
 [ext_resource path="res://assets/sprites/forestDecoration_0.png" type="Texture" id=13]
+[ext_resource path="res://godot-src/Entities/blueprints/troll.tres" type="Resource" id=14]
+[ext_resource path="res://assets/sprites/troll_.png" type="Texture" id=15]
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 9 )
@@ -25,6 +27,10 @@ region = Rect2( 18.3333, 54.727, 12.0368, 21.8649 )
 [sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 13 )
 region = Rect2( 130, 18, 6, 9 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 15 )
+region = Rect2( 5, 9, 15, 15 )
 
 [sub_resource type="TileSet" id=8]
 0/name = "forest_.png 0"
@@ -107,6 +113,11 @@ editor_sprite = SubResource( 10 )
 position = Vector2( 423, 47 )
 entity_data = ExtResource( 11 )
 editor_sprite = SubResource( 10 )
+
+[node name="troll" parent="GameWorld/Entities" instance=ExtResource( 6 )]
+position = Vector2( 450, 242 )
+entity_data = ExtResource( 14 )
+editor_sprite = SubResource( 11 )
 
 [node name="Spawnpoint" type="Position2D" parent="GameWorld"]
 unique_name_in_owner = true

@@ -72,7 +72,6 @@ pub fn system_crafting(world: &mut World, thinkers: &mut World, event_queue: &mu
                             }
                         }
                     }
-
                 }
                 _ => {}
             }

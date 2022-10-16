@@ -7,7 +7,7 @@ script = ExtResource( 1 )
 action = 5
 cost = 1
 name = "FindCover"
-pre_conditions = {
+pre_conditions = null
+post_conditions = {
 "protected": true
 }
-post_conditions = null

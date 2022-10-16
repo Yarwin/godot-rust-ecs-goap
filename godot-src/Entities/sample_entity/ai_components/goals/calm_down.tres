@@ -8,5 +8,5 @@ goal = 1
 priority = 4
 name = "Calm Down"
 desired_state = {
-"is_frightened": false
+"is_scared": false
 }

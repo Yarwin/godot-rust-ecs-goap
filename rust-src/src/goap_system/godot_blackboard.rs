@@ -57,6 +57,8 @@ pub struct GoapBlackboardNode {
     #[property]
     pub is_attacking: bool,
     #[property]
+    pub is_covered: bool,
+    #[property]
     pub current_goal: GodotString
 }
 
@@ -71,6 +73,7 @@ impl GoapBlackboardNode {
             interact_position: None,
             is_waiting: false,
             is_attacking: false,
+            is_covered: false,
             current_goal: Default::default()
         }
     }

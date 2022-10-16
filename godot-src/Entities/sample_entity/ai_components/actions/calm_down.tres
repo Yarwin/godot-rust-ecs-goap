@@ -11,5 +11,5 @@ pre_conditions = {
 "protected": true
 }
 post_conditions = {
-"is_frightened": false
+"is_scared": false
 }

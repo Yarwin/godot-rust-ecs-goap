@@ -2,15 +2,16 @@ use std::collections::{HashMap, VecDeque};
 
 use gdnative::api::*;
 use gdnative::prelude::*;
-use hecs::{Entity, World};
+use hecs::{World};
 use crate::components::agent_components::Health;
 
 use crate::components::godot_component_resources::EntityResource;
 use crate::goap::example_sensors::{FindObjectSensor, UpdatePositionSensor};
 use crate::goap::goap_planner::GoapPlannerWorkingFacts;
-use crate::goap_system::ecs_thinker::GoapThinker;
+use crate::goap_system::ecs_thinker::{Attribute, GoapThinker, GoapWorkingMemoryFact};
 use crate::goap_system::goap_system::{goap_system, system_update_dynamic_sensors};
 use crate::godot_entity_builder;
+use crate::systems::fear_stimuli_system::system_fear;
 use crate::systems::godot_output_system::system_send_events;
 use crate::systems::health_systems::{system_regeneration, system_remove_dead, system_remove_picked_items, system_update_health};
 use crate::systems::hunger_system::system_hunger;
@@ -41,15 +42,12 @@ impl EcsFactory {
 pub enum GodotInput {
     AnimationFinished{ entity: u32, animation_name: GodotString },
     GameStateUpdate { name: GodotString, value: bool },
-    EntityDamaged { entity: u32, attacker: u32 }
+    EntityDamaged { entity: u32, attacker: u32 },
+    EntityScared { entity: u32 }
 }
 
 
 pub enum EcsEvent {
-    /// outputs to be processed by Godot engine – in format Action(entity_id, *data)
-    PlayAnimation(Entity, GodotString),
-    MoveTo(Entity, Vector2),
-    Rotate(Entity, f32),
     /// information to create some entity by "name" that is being specified in the ECS blueprint
     CreateEntity(GodotString, Option<Ref<Node>>, Option<Vector2>)
 }
@@ -152,8 +150,8 @@ impl Ecs {
         while !self.input_queue.is_empty() {
             let input = self.input_queue.pop_front().unwrap();
             match input {
-                GodotInput::AnimationFinished { animation_name: _a, entity: id } => {
-                    let entity = unsafe { self.thinkers.find_entity_from_id(id) };
+                GodotInput::AnimationFinished { animation_name: _a, entity: entity_id } => {
+                    let entity = unsafe { self.thinkers.find_entity_from_id(entity_id) };
                     let thinker = self.thinkers.query_one_mut::<&mut GoapThinker>(entity).expect("NO SUCH ENTITY");
                     set!(thinker.blackboard, is_waiting, false);
                 },
@@ -166,9 +164,17 @@ impl Ecs {
                         }
                         Err(_) => {}
                     }
-                }
+                },
                 GodotInput::GameStateUpdate {name, value} => {
                     self.global_facts.insert(name.to_string(), value);
+                },
+                GodotInput::EntityScared {entity: entity_id } => {
+                    let entity = unsafe { self.thinkers.find_entity_from_id(entity_id) };
+                    if let Ok(some_thinker) = self.thinkers.query_one_mut::<&mut GoapThinker>(entity) {
+                        some_thinker.working_memory.insert(
+                            "fear".to_string(),
+                            GoapWorkingMemoryFact::Desire(Attribute { value: 100.0, confidence: 100.0 }));
+                    }
                 }
             }
         }
@@ -185,15 +191,16 @@ impl Ecs {
     fn _physics_process(&mut self, _o: &Node, delta: f32) {
         // create new entities
         self.create_entities();
+        // system_reset_collision_shapes - if we spawn new entity DIRECTLY inside the godot node area2D collision shape it won't be caught by the godot engine
 
         // process inputs
         self.process_input_queue();
 
         // run "static" systems
         system_regeneration(&mut self.world, delta);
+        // run "static" agents systems
         system_hunger(&mut self.thinkers, delta);
-
-        // system_reset_collision_shapes - if we spawn new entity DIRECTLY inside the godot node area2D collision shape it won't be caught by the godot engine
+        system_fear(&mut self.thinkers, delta);
 
         // run sensors and update agents memory
         system_update_dynamic_sensors::<UpdatePositionSensor>(&mut self.thinkers, &mut self.world, delta);
